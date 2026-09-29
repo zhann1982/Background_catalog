@@ -1,0 +1,26 @@
+24/24 PASS
+
+✓ 160 cards
+✓ 390px gallery: no horizontal overflow
+✓ Bilingual search
+✓ Empty state
+✓ Reset filters
+✓ Combined filters
+✓ Category gradients has 20 cards
+✓ Category geometry has 20 cards
+✓ Category particles has 20 cards
+✓ Category space has 20 cards
+✓ Category nature has 20 cards
+✓ Category abstract has 20 cards
+✓ Category retro has 20 cards
+✓ Category minimal has 20 cards
+✓ Addressable Canvas page
+✓ Language preserves route and all settings
+✓ Export reflects custom settings
+✓ Copy sends active code to clipboard API
+✓ Download creates standalone HTML with current settings
+✓ Hide sample text
+✓ Reset settings
+✓ 390px detail: no horizontal overflow
+✓ CSS export speed and pause
+✓ Missing route handled

@@ -1,0 +1,15 @@
+{
+  "passed": 80,
+  "total": 80,
+  "errors": [],
+  "checks": [
+    "Pixels change over time",
+    "One RAF per active scene",
+    "Pause/resume",
+    "Offscreen suspension",
+    "Background-tab suspension",
+    "Reduced-motion changes",
+    "Resize and custom settings",
+    "Destroy cancels RAF and listeners"
+  ]
+}

@@ -1,0 +1,17 @@
+# Local credentials and environment overrides
+.env
+.env.*
+!.env.example
+
+# Runtime output and caches
+node_modules/
+*.log
+*.pid
+.cache/
+coverage/
+
+# Operating-system and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp

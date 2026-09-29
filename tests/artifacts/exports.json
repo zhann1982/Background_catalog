@@ -1,0 +1,14 @@
+{
+  "total": 160,
+  "passed": 160,
+  "failures": [],
+  "checks": [
+    "8 × 20 entries",
+    "unique IDs",
+    "80 CSS backgrounds parsed",
+    "80 Canvas exports render",
+    "standalone code without requests",
+    "custom colors, speed and density",
+    "Canvas pause and destruction"
+  ]
+}

@@ -1,0 +1,33 @@
+(async()=>{
+ const f=document.querySelector('#app');await new Promise(r=>f.onload=r);const win=f.contentWindow,doc=f.contentDocument;
+ const results=[],check=(ok,name)=>{results.push({name,pass:!!ok});document.querySelector('#summary').textContent=JSON.stringify(results,null,2)};
+ const delay=()=>new Promise(r=>setTimeout(r,60));
+ const navigate=async hash=>{win.location.hash=hash;await delay()};
+ const el=s=>doc.querySelector(s),click=s=>el(s).click();
+ const change=(s,value)=>{el(s).value=value;el(s).dispatchEvent(new Event('input',{bubbles:true}));el(s).dispatchEvent(new Event('change',{bubbles:true}))};
+ doc.startViewTransition=undefined;
+ click('[data-lang="ru"]');
+ check(el('#grid').children.length===160,'160 cards');
+ check(doc.documentElement.scrollWidth<=390,'390px gallery: no horizontal overflow');
+ change('#search','Spirograph');check(el('#grid').children.length===1&&el('.card h3').textContent==='Спирограф','Bilingual search');
+ change('#search','zzznothing');check(!!el('.empty'),'Empty state');click('#clear');check(el('#grid').children.length===160,'Reset filters');
+ change('#tech','CSS');change('#motion','static');change('#tone','light');check(el('#grid').children.length>0&&[...doc.querySelectorAll('.card')].every(e=>e.getAttribute('aria-label').includes('CSS, Статичные')),'Combined filters');
+ change('#tech','all');change('#motion','all');change('#tone','all');
+ for(const c of ['gradients','geometry','particles','space','nature','abstract','retro','minimal']){await navigate('#/collection/'+c);check(el('#grid').children.length===20,'Category '+c+' has 20 cards')}
+ await navigate('#/background/particles-11');
+ check(!!el('.preview canvas'),'Addressable Canvas page');
+ change('#color-0','#ee5599');change('#speed','1.7');change('#density','150');click('#pause');click('[data-lang="en"]');
+ check(el('h1').textContent==='Connected minds'&&el('#color-0').value==='#ee5599'&&el('#speed').value==='1.7'&&el('#density').value==='150'&&el('#pause').getAttribute('aria-pressed')==='true','Language preserves route and all settings');
+ click('[data-tab="js"]');let code=el('#code').textContent;
+ check(code.includes('#ee5599')&&code.includes('"speed": 1.7')&&code.includes('"density": 150')&&code.includes('"paused": true'),'Export reflects custom settings');
+ let copied;Object.defineProperty(win.navigator,'clipboard',{configurable:true,value:{writeText:async s=>{copied=s}}});click('#copy');await delay();check(copied===code,'Copy sends active code to clipboard API');
+ let blob,downloadName;win.URL.createObjectURL=value=>{blob=value;return'blob:test'};win.URL.revokeObjectURL=()=>{};win.HTMLAnchorElement.prototype.click=function(){downloadName=this.download};click('#download');
+ check(downloadName==='particles-11.html'&&(await blob.text()).includes('#ee5599'),'Download creates standalone HTML with current settings');
+ click('#sample-toggle');check(el('#sample').hidden,'Hide sample text');
+ click('#reset');check(el('#speed').value==='1'&&el('#density').value==='100','Reset settings');
+ check(doc.documentElement.scrollWidth<=390,'390px detail: no horizontal overflow');
+ await navigate('#/background/gradients-01');click('[data-tab="css"]');change('#speed','0.5');click('#pause');check(el('#code').textContent.includes('36s')&&el('#code').textContent.includes('animation-play-state: paused'),'CSS export speed and pause');
+ await navigate('#/background/missing');check(!el('.preview'),'Missing route handled');
+ await navigate('#/');click('[data-lang="ru"]');win.scrollTo(0,0);
+ const failed=results.filter(r=>!r.pass);document.querySelector('#summary').textContent=`${results.length-failed.length}/${results.length} PASS\n\n`+results.map(r=>(r.pass?'✓ ':'✗ ')+r.name).join('\n');
+})();
